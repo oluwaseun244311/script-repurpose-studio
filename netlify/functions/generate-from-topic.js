@@ -1,4 +1,4 @@
-import { ask, ok, bad, parseBody } from './_shared.js';
+const { ask, ok, bad, parseBody } = require('./_shared');
 
 const STYLE_DESCRIPTIONS = {
   storytelling: 'narrative storytelling with a personal, engaging voice that draws the viewer in',
@@ -10,24 +10,26 @@ const STYLE_DESCRIPTIONS = {
   'short-form': 'punchy, fast-paced short-form reel style optimized for quick attention spans',
 };
 
-export const handler = async (event) => {
+exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return bad('Method Not Allowed', 405);
   try {
     const { topic, ideas = '', platform = 'youtube', wordTarget = 310, style = 'storytelling', stylePrompt = '' } = parseBody(event);
-    if (!topic?.trim()) return bad('topic is required', 400);
+    if (!topic || !topic.trim()) return bad('topic is required', 400);
 
     const styleDesc   = STYLE_DESCRIPTIONS[style] || STYLE_DESCRIPTIONS.storytelling;
-    const customStyle = stylePrompt?.trim();
+    const customStyle = stylePrompt ? stylePrompt.trim() : '';
 
-    const system = `You are a professional scriptwriter who specialises in video content. Write complete, engaging video scripts from scratch. Return ONLY the script text — no headings, no scene labels, no notes, no explanations.`;
+    const system = 'You are a professional scriptwriter who specialises in video content. Write complete, engaging video scripts from scratch. Return ONLY the script text — no headings, no scene labels, no notes, no explanations.';
 
-    const user = `${customStyle ? `STYLE INSTRUCTION (follow exactly):\n"""\n${customStyle}\n"""\n\n` : ''}Write a video script about: "${topic}"
-${ideas.trim() ? `\nKey ideas, angles, and points to cover:\n${ideas.trim()}\n` : ''}
-Requirements:
-${!customStyle ? `- Style: ${styleDesc}\n` : ''}- Length: approximately ${wordTarget} words
-- Platform: optimised for ${platform}
-- Start with a powerful hook that grabs attention immediately
-- No timestamps, no scene numbers — clean, flowing script text only`;
+    const user = (customStyle ? `STYLE INSTRUCTION (follow exactly):\n"""\n${customStyle}\n"""\n\n` : '') +
+      `Write a video script about: "${topic}"\n` +
+      (ideas && ideas.trim() ? `\nKey ideas, angles, and points to cover:\n${ideas.trim()}\n` : '') +
+      `\nRequirements:\n` +
+      (!customStyle ? `- Style: ${styleDesc}\n` : '') +
+      `- Length: approximately ${wordTarget} words\n` +
+      `- Platform: optimised for ${platform}\n` +
+      `- Start with a powerful hook that grabs attention immediately\n` +
+      `- No timestamps, no scene numbers — clean, flowing script text only`;
 
     const result = await ask(event.headers, system, user, 2048);
     return ok({ script: result });
