@@ -6,10 +6,6 @@
 [build.environment]
   NODE_VERSION = "20"
 
-[functions]
-  # Increase timeout for AI calls (max 26s on free tier)
-  timeout = 26
-
 # Route all /api/* calls to the matching Netlify Function
 [[redirects]]
   from   = "/api/:func"
