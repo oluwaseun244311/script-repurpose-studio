@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(start http://localhost:5173)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(npm run dev)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\COF\\.claude\\projects\\c--Users-COF-Desktop-content-ai"
+    ]
+  }
+}
