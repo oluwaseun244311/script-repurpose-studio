@@ -8,6 +8,10 @@
     "client": "cd client && npm run dev",
     "install:all": "npm install && cd server && npm install && cd ../client && npm install"
   },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "youtube-transcript": "^1.2.1"
+  },
   "devDependencies": {
     "concurrently": "^8.2.0"
   }
