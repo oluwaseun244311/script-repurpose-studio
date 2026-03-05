@@ -148,7 +148,7 @@ export function AppProvider({ children }) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(apiKey && { 'x-api-key': apiKey }),
+        ...(apiKey && { 'x-anthropic-key': apiKey }),
       },
       body: JSON.stringify(body),
     });

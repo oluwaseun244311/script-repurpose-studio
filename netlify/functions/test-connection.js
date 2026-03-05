@@ -4,7 +4,7 @@ import { ok, bad, parseBody } from './_shared.js';
 export const handler = async (event) => {
   if (event.httpMethod !== 'POST') return bad('Method Not Allowed', 405);
   try {
-    const key = event.headers['x-api-key'] || process.env.ANTHROPIC_API_KEY;
+    const key = event.headers['x-anthropic-key'] || process.env.ANTHROPIC_API_KEY;
     if (!key) return bad('No API key configured. Add your Claude API key in Settings.', 400);
 
     const client = new Anthropic({ apiKey: key });

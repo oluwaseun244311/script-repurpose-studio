@@ -11,7 +11,7 @@ export const extractJSON = (text) => {
 
 // ── Anthropic client ─────────────────────────────────────────────────────────
 export const getClient = (headers) => {
-  const key = headers['x-api-key'] || process.env.ANTHROPIC_API_KEY;
+  const key = headers['x-anthropic-key'] || process.env.ANTHROPIC_API_KEY;
   if (!key) throw new Error('No API key configured. Add your Claude API key in Settings.');
   return new Anthropic({ apiKey: key });
 };
